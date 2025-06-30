@@ -46,7 +46,7 @@ public class GradeProcessor {
 
                 String[] parts = line.split(",");
                 if (parts.length != 2) {
-                    System.err.printf("Error: Line %d malformed in NameFile: %s%n", lineNum, line);
+                    System.err.printf("Error: Line %d in NameFile: %s%n", lineNum, line);
                     continue;
                 }
 
@@ -83,7 +83,7 @@ public class GradeProcessor {
 
                 String[] parts = line.split(",");
                 if (parts.length != 6) {
-                    System.err.printf("Error: Line %d malformed in CourseFile: %s%n", lineNum, line);
+                    System.err.printf("Error: Line %d in CourseFile: %s%n", lineNum, line);
                     continue;
                 }
 
