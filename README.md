@@ -1,6 +1,6 @@
 # CP317 Student Mark Tracker
 
-This Java application reads student names and course grades from two input files, calculates final grades using weighted averages, and outputs the results sorted by student ID.
+Reads student names and course grades from two input files, calculates final grades using weighted averages, and outputs the results sorted by student ID.
 
 ## Authors
 - Michael Tahirovic
