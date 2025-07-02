@@ -7,9 +7,9 @@ import java.util.*;
  */
 public class GradeProcessor {
 
-    private static final String NAME_FILE = "NameFile.txt";
-    private static final String COURSE_FILE = "CourseFile.txt";
-    private static final String OUTPUT_FILE = "OutputFile.txt";
+    private static final String NAME_FILE = "../input/NameFile.txt";
+    private static final String COURSE_FILE = "../input/CourseFile.txt";
+    private static final String OUTPUT_FILE = "../output/OutputFile.txt";
 
     public static void main(String[] args) {
         Map<String, String> nameMap = readNameFile(NAME_FILE);
