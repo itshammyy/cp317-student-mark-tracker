@@ -27,7 +27,7 @@ public class FileProcessor {
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
                 // Check if the line has at least two parts and that they aren't empty (ID and Name) --offensive programming
-                if (parts.length >= 2 && !parts[0].trim().isEmpty() && !parts[1].trim().isEmpty()) {
+                if (parts.length >= 2 && parts[0].trim().length() == 9 && !parts[1].trim().isEmpty()) {
                     Student student = new Student(parts[0].trim(), parts[1].trim());
                     studentLog.add(student);
                 } else {
@@ -53,31 +53,40 @@ public class FileProcessor {
                 String[] parts = line.split(",");
                 if (parts.length >= 6) {
                     String id = parts[0].trim();
-                    Student student = studentLog.stream()
-                        .filter(s -> s.getStudentId().equals(id))
-                        .findFirst()
-                        .orElse(null);
-                    if (student != null) {
-                        Float t1;
-                        Float t2;
-                        Float t3;
-                        Float fe;
-                        String course = parts[1].trim();
-                        try {
-                            t1 = Float.parseFloat(parts[2]);
-                            t2 = Float.parseFloat(parts[3]);
-                            t3 = Float.parseFloat(parts[4]);
-                            fe = Float.parseFloat(parts[5]);
-                            
-                            // Change Grade type to whatever required, default is TripleGrade
-                            student.addGrade(new TripleGrade(course, t1, t2, t3, fe));
-                        } catch (NumberFormatException e) {
-                            System.err.println("Invalid grade format in CourseFile for student ID: " + id);
-                            line = br.readLine();
-                            continue;
+                    if (id.length() == 9) {
+                        Student student = studentLog.stream()
+                            .filter(s -> s.getStudentId().equals(id))
+                            .findFirst()
+                            .orElse(null);
+                        if (student != null) {
+                            Float t1;
+                            Float t2;
+                            Float t3;
+                            Float fe;
+                            String course = parts[1].trim();
+                            // check if course is formatted with 2 letters and 3 digits ex. CP317
+                            if (course.matches("[A-Z]{2}\\d{3}")) {
+                                try {
+                                    t1 = Float.parseFloat(parts[2]);
+                                    t2 = Float.parseFloat(parts[3]);
+                                    t3 = Float.parseFloat(parts[4]);
+                                    fe = Float.parseFloat(parts[5]);
+                                    
+                                    // Change Grade type to whatever required, default is TripleGrade
+                                    student.addGrade(new TripleGrade(course, t1, t2, t3, fe));
+                                } catch (NumberFormatException e) {
+                                    System.err.println("Invalid grade format in CourseFile for student ID: " + id);
+                                    line = br.readLine();
+                                    continue;
+                                }
+                            } else {
+                                System.err.println("Invalid course code format in CourseFile: " + course);
+                            }
+                        } else {
+                            System.err.println("Student ID not found in NameFile: " + id);                        
                         }
                     } else {
-                        System.err.println("Student ID not found in NameFile: " + id);                        
+                        System.err.println("Invalid student ID format in CourseFile: " + id);
                     }
                 } else {
                     System.err.println("Invalid line in CourseFile: " + line);

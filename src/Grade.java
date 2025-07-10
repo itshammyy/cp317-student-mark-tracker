@@ -14,6 +14,7 @@ public abstract class Grade {  // Abstract class for grades
 
     public Grade(String courseCode, Float finalExam) {
         this.courseCode = courseCode;
+        this.finalGrade = finalExam;  // Initialize final grade with the final exam score
     }
 
     public abstract Float calculateFinalGrade();  // Abstract method to be implemented by subclasses
