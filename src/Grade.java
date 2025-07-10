@@ -1,29 +1,25 @@
 /*
  * Grade.java
- * This class represents a student's grades for a course.
+ * This class represents an abstract class for student's grades for a course.
+ * Allows for different types of grading systems to extend it, such as TripleGrade.
+ * It contains the course code and a method to calculate the final grade.
  */
 
-public class Grade {
-    public String courseCode;
-    private Float t1, t2, t3, finalExam; // Encapsulated grades
-    public Float finalGrade;
+public abstract class Grade {  // Abstract class for grades
+    protected String courseCode;
+    protected Float finalGrade;
 
-    public Grade(String courseCode, Float t1, Float t2, Float t3, Float finalExam) {
+    public Grade(String courseCode, Float finalExam) {
         this.courseCode = courseCode;
-        this.t1 = t1;
-        this.t2 = t2;
-        this.t3 = t3;
-        this.finalExam = finalExam;
     }
 
-    public Float calculateFinalGrade() {
-        if (t1 != null && t2 != null && t3 != null && finalExam != null) {
-            return (t1 * 0.2f + t2 * 0.2f + t3 * 0.2f + finalExam * 0.4f);  
-        }
-        throw new IllegalStateException("Missing grades - cannot calculate final grade.");
-    }
+    public abstract Float calculateFinalGrade();  // Abstract method to be implemented by subclasses
 
     public String getCourseCode() {
         return courseCode;
+    }
+    
+    public Float getFinalGrade() {
+        return finalGrade;
     }
 }

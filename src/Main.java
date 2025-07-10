@@ -1,5 +1,4 @@
-import java.util.Map;
-import java.util.List;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
@@ -7,9 +6,9 @@ public class Main {
         String courseFile = "../input/CourseFile.txt";
         String outputFile = "../output/OutputFile.txt";
 
-        Map<String, String> studentNames = FileProcessor.readStudentNames(nameFile); // Read student names from file
-        List<Student> students = FileProcessor.readCourseData(courseFile, studentNames); // Read course data and create Student objects
-        FileProcessor.writeOutput(outputFile, students);    // Write the output to a file
+        ArrayList<Student> studentLog = FileProcessor.readStudentNames(nameFile); // Read student names from file
+        FileProcessor.readCourseData(courseFile, studentLog); // Read course data and update student log
+        FileProcessor.writeOutput(outputFile, studentLog);    // Write the output to a file
 
         System.out.println("Output written to: " + outputFile);
     }

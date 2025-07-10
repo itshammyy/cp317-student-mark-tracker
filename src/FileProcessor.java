@@ -3,11 +3,7 @@
  * This class handles reading student names and course data from files.
  * Uses offencive programming techniques to handle errors gracefully and before they effect the rest of the program.
  */
-
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -19,16 +15,18 @@ public class FileProcessor {
     /**
      * Reads student names from a file and returns a map of student ID to student name.
      * @param path The path to the NameFile.
-     * @return A map containing student IDs as keys and student names as values.
+     * @return An ArrayList containing student IDs as keys and student names as values.
      */
-    public static Map<String, String> readStudentNames(String path) {
-        Map<String, String> studentMap = new HashMap<>();
+    public static ArrayList<Student> readStudentNames(String path) {
+        ArrayList<Student> studentLog = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
+                // Check if the line has at least two parts and that they aren't empty (ID and Name) --offensive programming
                 if (parts.length >= 2 && !parts[0].trim().isEmpty() && !parts[1].trim().isEmpty()) {
-                    studentMap.put(parts[0].trim(), parts[1].trim());
+                    Student student = new Student(parts[0].trim(), parts[1].trim());
+                    studentLog.add(student);
                 } else {
                     System.err.println("Invalid line in NameFile: " + line);
                 }
@@ -36,26 +34,27 @@ public class FileProcessor {
         } catch (IOException e) {
             System.err.println("Error reading NameFile: " + e.getMessage());
         }
-        return studentMap;
+        return studentLog;
     }
 
     /**
-     * Reads course data from a file and creates a list of Student objects with their grades.
+     * Reads course data from a file and adds all found grades to associated student.
      * @param path The path to the CourseFile.
-     * @param studentMap A map of student IDs to names.
-     * @return A list of Student objects with their grades.
+     * @param studentLog An ArrayList of students.
+     * @return An updated list of Student objects with their grades.
      */
-    public static List<Student> readCourseData(String path, Map<String, String> studentMap) {
-        Map<String, Student> studentObjects = new HashMap<>();
-
+    public static void readCourseData(String path, ArrayList<Student> studentLog) {
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (parts.length >= 6) {
                     String id = parts[0].trim();
-                    String name = studentMap.getOrDefault(id, "UNKNOWN");
-                    if (!name.equals("UNKNOWN")) {
+                    Student student = studentLog.stream()
+                        .filter(s -> s.getStudentId().equals(id))
+                        .findFirst()
+                        .orElse(null);
+                    if (student != null) {
                         Float t1;
                         Float t2;
                         Float t3;
@@ -66,9 +65,9 @@ public class FileProcessor {
                             t2 = Float.parseFloat(parts[3]);
                             t3 = Float.parseFloat(parts[4]);
                             fe = Float.parseFloat(parts[5]);
-                            Student student = studentObjects.getOrDefault(id, new Student(id, name));
-                            student.addGrade(new Grade(course, t1, t2, t3, fe));
-                            studentObjects.put(id, student);
+                            
+                            // Change Grade type to whatever required, default is TripleGrade
+                            student.addGrade(new TripleGrade(course, t1, t2, t3, fe));
                         } catch (NumberFormatException e) {
                             System.err.println("Invalid grade format in CourseFile for student ID: " + id);
                             line = br.readLine();
@@ -77,37 +76,38 @@ public class FileProcessor {
                     } else {
                         System.err.println("Student ID not found in NameFile: " + id);                        
                     }
-                }
-                else {
+                } else {
                     System.err.println("Invalid line in CourseFile: " + line);
                 }
             }
         } catch (IOException e) {
             System.err.println("Error reading CourseFile: " + e.getMessage());
         }
-
-        return new ArrayList<>(studentObjects.values());
     }
 
     /*
      * Writes the final grades of students to an output file.
      * Each line contains the student ID, student name, course code, and final grade.
+     * @param path The path to the OutputFile.
+     * @param students A list of Student objects with their grades.
      */
-    public static void writeOutput(String path, List<Student> students) {
+    public static void writeOutput(String path, ArrayList<Student> students) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))) {
             bw.write("Student ID,Student Name,Course Code,Final Grade");
             bw.newLine();
-
             for (Student s : students) {
-                for (Grade g : s.getGrades()) {
-                    float finalGrade = g.calculateFinalGrade();
-                    bw.write(String.format("%s, %s, %s, %.1f",
-                        s.getStudentId(), s.getStudentName(),
-                        g.getCourseCode(), finalGrade));
-                    bw.newLine();
+                if (!s.getGrades().isEmpty()) {            
+                    for (Grade g : s.getGrades()) {   // Works due to polymorphism
+                        float finalGrade = g.calculateFinalGrade();
+                        bw.write(String.format("%s, %s, %s, %.1f",
+                            s.getStudentId(), s.getStudentName(),
+                            g.getCourseCode(), finalGrade));
+                        bw.newLine();
+                    }
+                } else {
+                    System.err.println("No grades found for student ID: " + s.getStudentId());
                 }
             }
-
         } catch (IOException e) {
             System.err.println("Error writing OutputFile: " + e.getMessage());
         }

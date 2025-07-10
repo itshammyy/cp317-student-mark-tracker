@@ -16,6 +16,7 @@ public class Student {
         grades.add(grade);
     }
 
+    // Encapsulated getters for studentId, grades, and studentName
     public List<Grade> getGrades() {
         return grades;
     }
