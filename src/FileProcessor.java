@@ -93,8 +93,12 @@ public class FileProcessor {
      */
     public static void writeOutput(String path, ArrayList<Student> students) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))) {
-            bw.write("Student ID,Student Name,Course Code,Final Grade");
+            bw.write("Student ID, Student Name, Course Code, Final Grade");
             bw.newLine();
+            bw.write("=".repeat(50));
+            bw.newLine();
+            // Sort students by ID for consistent output
+            students.sort((s1, s2) -> s1.getStudentId().compareTo(s2.getStudentId()));
             for (Student s : students) {
                 if (!s.getGrades().isEmpty()) {            
                     for (Grade g : s.getGrades()) {   // Works due to polymorphism

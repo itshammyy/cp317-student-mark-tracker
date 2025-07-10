@@ -16,6 +16,7 @@ public class TripleGrade extends Grade { // Inheritance from Grade class
     public Float calculateFinalGrade() {
         if (t1 != null && t2 != null && t3 != null && finalExam != null) {
             finalGrade = (t1 * 0.2f + t2 * 0.2f + t3 * 0.2f + finalExam * 0.4f);
+            finalGrade = Math.round(finalGrade * 10) / 10.0f;
             return finalGrade;
         }
         throw new IllegalStateException("Missing grades - cannot calculate final grade.");
