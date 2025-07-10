@@ -7,6 +7,7 @@ public class TripleGrade extends Grade { // Inheritance from Grade class
 
     public TripleGrade(String courseCode, Float t1, Float t2, Float t3, Float finalExam) {
         super(courseCode, finalExam); // Explicitly call the superclass constructor
+        this.courseCode = courseCode;
         this.t1 = t1;
         this.t2 = t2;
         this.t3 = t3;
