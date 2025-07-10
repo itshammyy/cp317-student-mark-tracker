@@ -1,3 +1,8 @@
+/*
+ * Main.java
+ * This is the main entry point for the student mark tracker application.
+ * It initializes the file paths, reads student names and course data, writing students as the output to a file.
+ */
 import java.util.ArrayList;
 
 public class Main {

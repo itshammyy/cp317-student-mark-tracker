@@ -2,6 +2,9 @@
  * FileProcessor.java
  * This class handles reading student names and course data from files.
  * Uses offencive programming techniques to handle errors gracefully and before they effect the rest of the program.
+ * @method readStudentNames(): Reads student names from a file and returns a map of student ID to student name.
+ * @method readCourseData(): Reads course data from a file and adds all found grades to associated student.
+ * @method writeOutput(): Writes the final grades of students to an output file.
  */
 import java.util.ArrayList;
 import java.io.BufferedReader;

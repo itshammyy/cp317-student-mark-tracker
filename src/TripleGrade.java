@@ -1,6 +1,8 @@
 /*
  * TripleGrade.java
  * This class represents a student's grades for a course with three tests and a final exam.
+ * Inherits from the Grade class and implements the method to calculate the final grade.
+ * @method calculateFinalGrade(): Calculates the final grade based on the three tests and final exam.
  */
 public class TripleGrade extends Grade { // Inheritance from Grade class
     private Float t1, t2, t3, finalExam; // Encapsulated grades
