@@ -1,5 +1,60 @@
 # QA Test Results for Student Mark Tracker
 
+## Overview
+
+This document contains comprehensive QA testing results for the CP317 Student Mark Tracker project. All offensive programming principles have been tested and validated.
+
+### Classes and Offensive Programming Principles Tested
+
+**Classes:**
+- ✅ `Main` - Entry point and orchestration
+- ✅ `FileProcessor` - File I/O and data validation
+- ✅ `Student` - Student data model and grade management
+- ✅ `Grade` - Abstract base class for grades
+- ✅ `TripleGrade` - Concrete grade implementation with calculation
+
+**Offensive Programming Principles Tested:**
+- ✅ **Input Validation**: Student ID format (9 digits), course code format (2 letters + 3 digits)
+- ✅ **Data Type Validation**: Numeric grade parsing with NumberFormatException handling
+- ✅ **Null Checking**: TripleGrade.calculateFinalGrade() checks for null grades
+- ✅ **Boundary Conditions**: Empty files, missing fields, invalid formats
+- ✅ **Error Logging**: Comprehensive System.err.println() for all error cases
+- ✅ **Graceful Degradation**: Program continues processing valid records when invalid ones are encountered
+- ✅ **File I/O Error Handling**: Try-catch blocks for IOException
+
+### How to Use QA Test Files
+
+1. **Copy test files to input directory:**
+   ```bash
+   cp QATestInput/NameFile_invalid_id.txt input/NameFile.txt
+   cp QATestInput/CourseFile_valid.txt input/CourseFile.txt
+   ```
+
+2. **Run the program:**
+   ```bash
+   javac src/*.java
+   java -cp src Main
+   ```
+
+3. **Observe console output** for error messages and check the output file for results.
+
+**Available Test Files in QATestInput/:**
+- `NameFile_valid.txt` / `CourseFile_valid.txt` - Baseline valid data
+- `NameFile_invalid_id.txt` - Student ID not 9 digits
+- `NameFile_empty_name.txt` - Student with empty name
+- `NameFile_empty_file.txt` - Empty name file
+- `CourseFile_bad_course_code.txt` - Invalid course code format
+- `CourseFile_non_numeric_grade.txt` - Non-numeric grade values
+- `CourseFile_missing_fields.txt` - Missing data fields
+- `CourseFile_student_not_found.txt` - Student ID not in name file
+- `CourseFile_null_grades.txt` - Null grade values
+- `CourseFile_empty_file.txt` - Empty course file
+- `CourseFile_negative_grades.txt` - Negative grade values
+- `CourseFile_overflow_grades.txt` - Very large grade values
+- `CourseFile_decimal_grades.txt` - Decimal grade values
+
+---
+
 ## Summary Table
 
 | Test Case           | Expected Result                        | Actual Result                          | Pass/Fail | Notes |
